@@ -8,6 +8,7 @@
 namespace Drupal\entity_ref_tab_formatter\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Html;
+use Drupal\Field\FieldConfigInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
@@ -40,16 +41,49 @@ class EnityReferenceTabFormatter extends FormatterBase {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     // Implements the settings form.
-    $elements['view_mode'] = array(
+    $fieldSettings = $this->getFieldSettings();
+    $entity_type_id = $fieldSettings['target_type'];
+    $bundles = $fieldSettings['handler_settings']['target_bundles'];
+    foreach($bundles as $bundle) {
+      $fields_title = $fields_body = array_keys($this->getEntityFields($entity_type_id, $bundle));
+    }
+    if (!empty($fields_title)) {
+      array_unshift($fields_title, 'title');
+      $fields_title = array_combine($fields_title, $fields_title);
+      $fields_body = array_combine($fields_body, $fields_body);
+    }
+    $elements['tab_title'] = array(
       '#type' => 'select',
-      '#options' => array(0,1),
-      '#title' => $this->t('Selet the title field.'),
-      //'#default_value' => $this->getSetting('view_mode'),
+      '#options' => $fields_title,
+      '#title' => $this->t('Selet the tab title field.'),
+      '#default_value' => 'title',
       '#required' => TRUE,
+    );
+    $elements['tab_body'] = array(
+      '#type' => 'select',
+      '#options' => $fields_body,
+      '#title' => $this->t('Selet the tab body field.'),
+      //'#default_value' => 'body',
+      //'#required' => TRUE,
     );
     return $elements + parent::settingsForm($form, $form_state);
   }
 
+  /**
+   * Helper function.
+   */
+   private function getEntityFields($entity_type_id, $bundle) {
+    $entityManager = \Drupal::service('entity.manager');
+    $fields = [];
+    if (!empty($entity_type_id)) {
+      $fields = array_filter(
+        $entityManager->getFieldDefinitions($entity_type_id, $bundle), function ($field_definition) {
+        return $field_definition instanceof FieldConfigInterface;
+      }
+      );
+    }
+    return $fields;
+  }
   /**
    * {@inheritdoc}
    */
