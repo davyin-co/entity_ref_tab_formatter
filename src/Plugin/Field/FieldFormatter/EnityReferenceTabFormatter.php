@@ -104,14 +104,26 @@ class EnityReferenceTabFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    dpm($this->getSetting('tab_title'));
-    dpm($this->getSetting('tab_body'));
+    $title_field = $this->getSetting('tab_title');
+    $body_field = $this->getSetting('tab_body');
     $entity_type_id = $this->getFieldSettings()['target_type'];
+    $tabs = array();
     foreach ($items as $delta => $item) {
-      //dpm($item->getEntity());
-      //dpm($item->getValue()['target_id']);
-      $elements[$delta] = ['#markup' => "Hell0"];
+      $id = $item->getValue()['target_id'];
+      $content = \Drupal::entityTypeManager()->getStorage($entity_type_id)->load($id);
+      $title = $content->get($title_field)->getValue()[0]['value'];
+      $body = $content->get($body_field)->getValue()[0]['value'];
+      $tabs[$id] = array(
+        'title' => $title,
+        'body' => $body
+      );
+      //$elements[$delta] = ['#markup' => "Hell0"];
     }
+    dsm($tabs);
+    $elements[$delta] = array(
+      '#theme' => 'entity_ref_tab_formatter',
+      '#tabs' => $tabs,
+    );
 
     return $elements;
   }
