@@ -16,12 +16,14 @@
  */
 #}
 <div class="entity-ref-tab-formatter-tabs">
-  {% for fieldkey, fieldname in tabs %}
   <ul>
-    <li><a href="#tabs-{{fieldkey}}"> {{ fieldname.title }} </a></li>
+    {% for fieldkey, fieldname in tabs %}
+      <li><a href="#tabs-{{fieldkey}}"> {{ fieldname.title }} </a></li>
+    {% endfor %}
   </ul>
+  {% for fieldkey, fieldname in tabs %}
   <div id="tabs-{{fieldkey}}">
-    <p>{{ fieldname.body }}</p>
+    <p>{{ fieldname.body|raw }}</p>
   </div>
-{% endfor %}
+  {% endfor %}
 </div>

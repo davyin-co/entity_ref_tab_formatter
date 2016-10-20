@@ -119,10 +119,14 @@ class EnityReferenceTabFormatter extends FormatterBase {
       );
       //$elements[$delta] = ['#markup' => "Hell0"];
     }
-    dsm($tabs);
     $elements[$delta] = array(
       '#theme' => 'entity_ref_tab_formatter',
       '#tabs' => $tabs,
+      '#attached' => array(
+        'library' =>  array(
+          'entity_ref_tab_formatter/tab_formatter'
+        ),
+      ),
     );
 
     return $elements;
