@@ -33,6 +33,8 @@ class EnityReferenceTabFormatter extends FormatterBase {
   public static function defaultSettings() {
     return array(
       // Implement default settings.
+      'tab_title' => '',
+      'tab_body' => '',
     ) + parent::defaultSettings();
   }
 
@@ -52,6 +54,9 @@ class EnityReferenceTabFormatter extends FormatterBase {
       $fields_title = array_combine($fields_title, $fields_title);
       $fields_body = array_combine($fields_body, $fields_body);
     }
+    $elements['entity_type_id'] = array(
+      '#value' => $entity_type_id,
+    );
     $elements['tab_title'] = array(
       '#type' => 'select',
       '#options' => $fields_title,
@@ -63,7 +68,7 @@ class EnityReferenceTabFormatter extends FormatterBase {
       '#type' => 'select',
       '#options' => $fields_body,
       '#title' => $this->t('Selet the tab body field.'),
-      //'#default_value' => 'body',
+      '#default_value' => 'body',
       //'#required' => TRUE,
     );
     return $elements + parent::settingsForm($form, $form_state);
@@ -99,9 +104,13 @@ class EnityReferenceTabFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-
+    dpm($this->getSetting('tab_title'));
+    dpm($this->getSetting('tab_body'));
+    $entity_type_id = $this->getFieldSettings()['target_type'];
     foreach ($items as $delta => $item) {
-      $elements[$delta] = ['#markup' => $this->viewValue($item)];
+      //dpm($item->getEntity());
+      //dpm($item->getValue()['target_id']);
+      $elements[$delta] = ['#markup' => "Hell0"];
     }
 
     return $elements;
