@@ -1,0 +1,5 @@
+tab_formatter:
+  js:
+    js/tab_formatter.js: {}
+  dependencies:
+    - core/jquery.ui.tabs
