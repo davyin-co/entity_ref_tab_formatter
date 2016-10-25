@@ -134,17 +134,19 @@ class EnityReferenceTabFormatter extends FormatterBase {
     switch ($style) {
       case 'tab':
         $theme = 'entity_ref_tab_formatter';
+        $library = 'entity_ref_tab_formatter/tab_formatter';
         break;
       case 'accordion':
-          $theme = 'entity_ref_accordion_formatter';
-          break;
+        $theme = 'entity_ref_accordion_formatter';
+        $library = 'entity_ref_tab_formatter/accordion_formatter';
+        break;
     }
     $elements[$delta] = array(
       '#theme' => $theme,
       '#tabs' => $tabs,
       '#attached' => array(
         'library' =>  array(
-          'entity_ref_tab_formatter/tab_formatter'
+          $library
         ),
       ),
     );
