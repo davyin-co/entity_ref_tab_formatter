@@ -62,14 +62,14 @@ class EnityReferenceTabFormatter extends FormatterBase {
       '#type' => 'select',
       '#options' => $fields_title,
       '#title' => $this->t('Selet the tab title field.'),
-      '#default_value' => 'title',
+      '#default_value' => $this->getSetting('tab_title'),
       '#required' => TRUE,
     );
     $elements['tab_body'] = array(
       '#type' => 'select',
       '#options' => $fields_body,
       '#title' => $this->t('Selet the tab body field.'),
-      '#default_value' => 'body',
+      '#default_value' => $this->getSetting('tab_body'),
       //'#required' => TRUE,
     );
     $elements['style'] = array(
@@ -79,7 +79,7 @@ class EnityReferenceTabFormatter extends FormatterBase {
         'accordion' => 'Accordion',
       ),
       '#title' => $this->t('Display Style'),
-      //'#default_value' => ,
+      '#default_value' => $this->getSetting('style'),
     );
     return $elements + parent::settingsForm($form, $form_state);
   }
