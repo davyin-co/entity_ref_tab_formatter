@@ -71,6 +71,15 @@ class EnityReferenceTabFormatter extends FormatterBase {
       '#default_value' => 'body',
       //'#required' => TRUE,
     );
+    $elements['style'] = array(
+      '#type' => 'radios',
+      '#options' => array(
+        0 => 'Tab',
+        1 => 'Accordion'
+      ),
+      '#title' => $this->t('Display Style'),
+      '#default_value' => 0,
+    );
     return $elements + parent::settingsForm($form, $form_state);
   }
 
