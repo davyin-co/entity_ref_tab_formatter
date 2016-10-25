@@ -35,6 +35,7 @@ class EnityReferenceTabFormatter extends FormatterBase {
       // Implement default settings.
       'tab_title' => '',
       'tab_body' => '',
+      'style' => '',
     ) + parent::defaultSettings();
   }
 
@@ -74,11 +75,11 @@ class EnityReferenceTabFormatter extends FormatterBase {
     $elements['style'] = array(
       '#type' => 'radios',
       '#options' => array(
-        0 => 'Tab',
-        1 => 'Accordion'
+        'tab' => 'Tab',
+        'accordion' => 'Accordion',
       ),
       '#title' => $this->t('Display Style'),
-      '#default_value' => 0,
+      //'#default_value' => ,
     );
     return $elements + parent::settingsForm($form, $form_state);
   }
@@ -113,8 +114,10 @@ class EnityReferenceTabFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
+    dsm($this->getSettings());
     $title_field = $this->getSetting('tab_title');
     $body_field = $this->getSetting('tab_body');
+    $style = $this->getSetting('style');
     $entity_type_id = $this->getFieldSettings()['target_type'];
     $tabs = array();
     foreach ($items as $delta => $item) {
@@ -128,8 +131,16 @@ class EnityReferenceTabFormatter extends FormatterBase {
       );
       //$elements[$delta] = ['#markup' => "Hell0"];
     }
+    switch ($style) {
+      case 'tab':
+        $theme = 'entity_ref_tab_formatter';
+        break;
+      case 'accordion':
+          $theme = 'entity_ref_accordion_formatter';
+          break;
+    }
     $elements[$delta] = array(
-      '#theme' => 'entity_ref_tab_formatter',
+      '#theme' => $theme,
       '#tabs' => $tabs,
       '#attached' => array(
         'library' =>  array(
