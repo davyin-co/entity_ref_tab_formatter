@@ -114,7 +114,7 @@ class EnityReferenceTabFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    dsm($this->getSettings());
+    //dsm($this->getSettings());
     $title_field = $this->getSetting('tab_title');
     $body_field = $this->getSetting('tab_body');
     $style = $this->getSetting('style');
