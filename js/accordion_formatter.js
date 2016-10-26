@@ -1,5 +1,5 @@
 (function ($, Drupal, drupalSettings) {
  $( ".entity-ref-tab-formatter-accordion" ).accordion({
-  collapsible: true
+  collapsible: true, active: false
 });
 })(jQuery, Drupal, drupalSettings);
