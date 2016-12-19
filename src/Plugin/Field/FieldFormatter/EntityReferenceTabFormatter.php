@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\entity_ref_tab_formatter\Plugin\Field\FieldFormatter\EntityReferenceTabFormatter.
- */
-
 namespace Drupal\entity_ref_tab_formatter\Plugin\Field\FieldFormatter;
 
 use Drupal\Component\Utility\Html;
@@ -44,10 +39,10 @@ class EntityReferenceTabFormatter extends FormatterBase {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     // Implements the settings form.
-    $fieldSettings = $this->getFieldSettings();
-    $entity_type_id = $fieldSettings['target_type'];
-    $bundles = $fieldSettings['handler_settings']['target_bundles'];
-    foreach($bundles as $bundle) {
+    $field_settings = $this->getFieldSettings();
+    $entity_type_id = $field_settings['target_type'];
+    $bundles = $field_settings['handler_settings']['target_bundles'];
+    foreach ($bundles as $bundle) {
       $fields_title = $fields_body = array_keys($this->getEntityFields($entity_type_id, $bundle));
     }
     if (!empty($fields_title)) {
@@ -86,14 +81,14 @@ class EntityReferenceTabFormatter extends FormatterBase {
   /**
    * Helper function.
    */
-   private function getEntityFields($entity_type_id, $bundle) {
-    $entityManager = \Drupal::service('entity.manager');
+  private function getEntityFields($entity_type_id, $bundle) {
+    $entity_manager = \Drupal::service('entity.manager');
     $fields = [];
     if (!empty($entity_type_id)) {
       $fields = array_filter(
-        $entityManager->getFieldDefinitions($entity_type_id, $bundle), function ($field_definition) {
-        return $field_definition instanceof FieldConfigInterface;
-      }
+        $entity_manager->getFieldDefinitions($entity_type_id, $bundle), function ($field_definition) {
+          return $field_definition instanceof FieldConfigInterface;
+        }
       );
     }
     return $fields;
@@ -105,7 +100,6 @@ class EntityReferenceTabFormatter extends FormatterBase {
   public function settingsSummary() {
     $summary = [];
     // Implement settings summary.
-
     return $summary;
   }
 
@@ -126,7 +120,7 @@ class EntityReferenceTabFormatter extends FormatterBase {
       $body = $content->get($body_field)->getValue()[0]['value'];
       $tabs[$id] = array(
         'title' => $title,
-        'body' => $body
+        'body' => $body,
       );
     }
     switch ($style) {
@@ -134,6 +128,7 @@ class EntityReferenceTabFormatter extends FormatterBase {
         $theme = 'entity_ref_tab_formatter';
         $library = 'entity_ref_tab_formatter/tab_formatter';
         break;
+
       case 'accordion':
         $theme = 'entity_ref_accordion_formatter';
         $library = 'entity_ref_tab_formatter/accordion_formatter';
@@ -143,8 +138,8 @@ class EntityReferenceTabFormatter extends FormatterBase {
       '#theme' => $theme,
       '#tabs' => $tabs,
       '#attached' => array(
-        'library' =>  array(
-          $library
+        'library' => array(
+          $library,
         ),
       ),
     );
