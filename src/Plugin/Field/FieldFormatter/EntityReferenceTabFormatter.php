@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\entity_ref_tab_formatter\Plugin\Field\FieldFormatter\EnityReferenceTabFormatter.
+ * Contains \Drupal\entity_ref_tab_formatter\Plugin\Field\FieldFormatter\EntityReferenceTabFormatter.
  */
 
 namespace Drupal\entity_ref_tab_formatter\Plugin\Field\FieldFormatter;
@@ -15,18 +15,18 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'enity_reference_tab_formatter' formatter.
+ * Plugin implementation of the 'entity_reference_tab_formatter' formatter.
  *
  * @FieldFormatter(
- *   id = "enity_reference_tab_formatter",
- *   label = @Translation("Enity reference tab formatter"),
+ *   id = "entity_reference_tab_formatter",
+ *   label = @Translation("Entity reference tab formatter"),
  *   field_types = {
  *     "entity_reference",
  *     "entity_reference_revisions"
  *   }
  * )
  */
-class EnityReferenceTabFormatter extends FormatterBase {
+class EntityReferenceTabFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
@@ -70,7 +70,6 @@ class EnityReferenceTabFormatter extends FormatterBase {
       '#options' => $fields_body,
       '#title' => $this->t('Selet the tab body field.'),
       '#default_value' => $this->getSetting('tab_body'),
-      //'#required' => TRUE,
     );
     $elements['style'] = array(
       '#type' => 'radios',
@@ -99,6 +98,7 @@ class EnityReferenceTabFormatter extends FormatterBase {
     }
     return $fields;
   }
+
   /**
    * {@inheritdoc}
    */
@@ -114,7 +114,6 @@ class EnityReferenceTabFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    //dsm($this->getSettings());
     $title_field = $this->getSetting('tab_title');
     $body_field = $this->getSetting('tab_body');
     $style = $this->getSetting('style');
@@ -129,7 +128,6 @@ class EnityReferenceTabFormatter extends FormatterBase {
         'title' => $title,
         'body' => $body
       );
-      //$elements[$delta] = ['#markup' => "Hell0"];
     }
     switch ($style) {
       case 'tab':
