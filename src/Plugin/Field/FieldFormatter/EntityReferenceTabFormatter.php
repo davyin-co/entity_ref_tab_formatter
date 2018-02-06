@@ -117,7 +117,11 @@ class EntityReferenceTabFormatter extends FormatterBase {
       $id = $item->getValue()['target_id'];
       $content = \Drupal::entityTypeManager()->getStorage($entity_type_id)->load($id);
       $title = $content->get($title_field)->getValue()[0]['value'];
-      $body = $content->get($body_field)->getValue()[0]['value'];
+      $body = [
+        '#type' => 'processed_text',
+        '#text' => $content->get($body_field)->getValue()[0]['value'],
+        '#format' => $content->get($body_field)->getValue()[0]['format'],
+      ];
       $tabs[$id] = array(
         'title' => $title,
         'body' => $body,
