@@ -22,16 +22,17 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class EntityReferenceTabFormatter extends FormatterBase {
+
   /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
-    return array(
-      // Implement default settings.
-      'tab_title' => '',
-      'tab_body' => '',
-      'style' => '',
-    ) + parent::defaultSettings();
+    return [
+        // Implement default settings.
+        'tab_title' => '',
+        'tab_body' => '',
+        'style' => '',
+      ] + parent::defaultSettings();
   }
 
   /**
@@ -50,31 +51,31 @@ class EntityReferenceTabFormatter extends FormatterBase {
       $fields_title = array_combine($fields_title, $fields_title);
       $fields_body = array_combine($fields_body, $fields_body);
     }
-    $elements['entity_type_id'] = array(
+    $elements['entity_type_id'] = [
       '#value' => $entity_type_id,
-    );
-    $elements['tab_title'] = array(
+    ];
+    $elements['tab_title'] = [
       '#type' => 'select',
       '#options' => $fields_title,
       '#title' => $this->t('Selet the tab title field.'),
       '#default_value' => $this->getSetting('tab_title'),
       '#required' => TRUE,
-    );
-    $elements['tab_body'] = array(
+    ];
+    $elements['tab_body'] = [
       '#type' => 'select',
       '#options' => $fields_body,
       '#title' => $this->t('Selet the tab body field.'),
       '#default_value' => $this->getSetting('tab_body'),
-    );
-    $elements['style'] = array(
+    ];
+    $elements['style'] = [
       '#type' => 'radios',
-      '#options' => array(
+      '#options' => [
         'tab' => 'Tab',
         'accordion' => 'Accordion',
-      ),
+      ],
       '#title' => $this->t('Display Style'),
       '#default_value' => $this->getSetting('style'),
-    );
+    ];
     return $elements + parent::settingsForm($form, $form_state);
   }
 
@@ -87,8 +88,8 @@ class EntityReferenceTabFormatter extends FormatterBase {
     if (!empty($entity_type_id)) {
       $fields = array_filter(
         $entity_manager->getFieldDefinitions($entity_type_id, $bundle), function ($field_definition) {
-          return $field_definition instanceof FieldConfigInterface;
-        }
+        return $field_definition instanceof FieldConfigInterface;
+      }
       );
     }
     return $fields;
@@ -112,20 +113,37 @@ class EntityReferenceTabFormatter extends FormatterBase {
     $body_field = $this->getSetting('tab_body');
     $style = $this->getSetting('style');
     $entity_type_id = $this->getFieldSettings()['target_type'];
-    $tabs = array();
+    $tabs = [];
     foreach ($items as $delta => $item) {
       $id = $item->getValue()['target_id'];
-      $content = \Drupal::entityTypeManager()->getStorage($entity_type_id)->load($id);
+      if (empty($id)) {
+        continue;
+      }
+      $content = \Drupal::entityTypeManager()
+        ->getStorage($entity_type_id)
+        ->load($id);
       $title = $content->get($title_field)->getValue()[0]['value'];
+
+      $builder = \Drupal::entityTypeManager()->getViewBuilder('paragraph');
+      $entity = $content->get($body_field)->entity;
+      if ($entity) {
+        $body_build = $builder->view($entity, 'default');
+        $render = render($body_build);
+      }
+      else {
+        $body_build = 'NULL';
+      }
+
       $body = [
         '#type' => 'processed_text',
-        '#text' => $content->get($body_field)->getValue()[0]['value'],
-        '#format' => $content->get($body_field)->getValue()[0]['format'],
+        '#text' => $render,
+        //        '#format' => $content->get($body_field)->getValue()[0]['format'],
+        '#format' => 'full_html',
       ];
-      $tabs[$id] = array(
+      $tabs[$id] = [
         'title' => $title,
         'body' => $body,
-      );
+      ];
     }
     switch ($style) {
       case 'tab':
@@ -138,15 +156,15 @@ class EntityReferenceTabFormatter extends FormatterBase {
         $library = 'entity_ref_tab_formatter/accordion_formatter';
         break;
     }
-    $elements[$delta] = array(
+    $elements[$delta] = [
       '#theme' => $theme,
       '#tabs' => $tabs,
-      '#attached' => array(
-        'library' => array(
+      '#attached' => [
+        'library' => [
           $library,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
     return $elements;
   }

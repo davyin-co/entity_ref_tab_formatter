@@ -19,7 +19,8 @@
 {% for fieldkey, fieldname in tabs %}
   <h3>{{ fieldname.title }}</h3>
   <div>
-    <p>{{ fieldname.body|raw }}</p>
+    <p>{{ fieldname.body }}</p>
+{#    {{ drupal_entity('paragraph', 60, 'default') }}#}
   </div>
 {% endfor %}
 </div>
