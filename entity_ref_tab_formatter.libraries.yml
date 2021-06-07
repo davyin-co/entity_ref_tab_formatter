@@ -2,9 +2,9 @@ tab_formatter:
   js:
     js/tab_formatter.js: {}
   dependencies:
-    - core/jquery.ui.tabs
+    - jquery_ui_tabs/tabs
 accordion_formatter:
   js:
     js/accordion_formatter.js: {}
   dependencies:
-    - core/jquery.ui.accordion
+    - jquery_ui_accordion/accordion

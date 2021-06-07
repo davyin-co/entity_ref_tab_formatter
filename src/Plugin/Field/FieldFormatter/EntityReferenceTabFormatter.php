@@ -83,7 +83,7 @@ class EntityReferenceTabFormatter extends FormatterBase {
    * Helper function.
    */
   private function getEntityFields($entity_type_id, $bundle) {
-    $entity_manager = \Drupal::service('entity.manager');
+    $entity_manager = \Drupal::service('entity_field.manager');
     $fields = [];
     if (!empty($entity_type_id)) {
       $fields = array_filter(
