@@ -8,6 +8,7 @@ use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\paragraphs\Entity\Paragraph
 
 /**
  * Plugin implementation of the 'entity_reference_tab_formatter' formatter.
