@@ -125,13 +125,17 @@ class EntityReferenceTabFormatter extends FormatterBase {
       $title = $content->get($title_field)->getValue()[0]['value'];
 
       $builder = \Drupal::entityTypeManager()->getViewBuilder('paragraph');
-      $entity = $content->get($body_field)->entity;
-      if ($entity) {
-        $body_build = $builder->view($entity, 'default');
-        $render = render($body_build);
-      }
-      else {
-        $body_build = 'NULL';
+      $render = '';
+      if ($delta == 8 && !$content->get($body_field)->isEmpty()) {
+        $body_field_definition = $content->getFieldDefinitions()[$body_field];
+        $body_field_values = $content->get($body_field)->getValue();
+        if ($body_field_definition->getType() == 'entity_reference_revisions') {
+          foreach ($body_field_values as $element) {
+            $paragraph = Paragraph::load($element['target_id']);
+            $paragraph_view = $builder->view($paragraph, 'default');
+            $render .= render($paragraph_view);
+          }
+        }
       }
 
       $body = [
