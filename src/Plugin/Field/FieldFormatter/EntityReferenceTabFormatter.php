@@ -136,6 +136,8 @@ class EntityReferenceTabFormatter extends FormatterBase {
             $paragraph_view = $builder->view($paragraph, 'default');
             $render .= render($paragraph_view);
           }
+        } elseif ($body_field_definition->getType() == 'text_long')  {
+          $render .= render($content->get($body_field)->getValue()[0]['value']);
         }
       }
 
