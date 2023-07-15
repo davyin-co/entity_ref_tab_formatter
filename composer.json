@@ -1,12 +1,12 @@
 
 {
     "name": "davyin/entity_ref_tab_formatter",
-    "description": "entity_ref_tab_formatter for drupal 10 +.",
+    "description": "entity_ref_tab_formatter for drupal 8 +.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "homepage": "https://github.com/davyin-co/entity_ref_tab_formatter",
     "require": {
-        "drupal/core": "^10",
+        "drupal/core": "^8.8 || ^9 || ^10",
         "drupal/entity_browser":"^2.5",
         "drupal/jquery_ui_accordion": "^2.0",
         "drupal/jquery_ui_tabs": "^2.0"
