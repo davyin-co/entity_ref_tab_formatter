@@ -126,7 +126,7 @@ class EntityReferenceTabFormatter extends FormatterBase {
       $title = $content->get($title_field)->getValue()[0]['value'];
 
       $builder = \Drupal::entityTypeManager()->getViewBuilder('paragraph');
-      $render = '';
+      $body = [];
       if (!$content->get($body_field)->isEmpty()) {
         $body_field_definition = $content->getFieldDefinitions()[$body_field];
         $body_field_values = $content->get($body_field)->getValue();
@@ -134,19 +134,17 @@ class EntityReferenceTabFormatter extends FormatterBase {
           foreach ($body_field_values as $element) {
             $paragraph = Paragraph::load($element['target_id']);
             $paragraph_view = $builder->view($paragraph, 'default');
-            $render .= render($paragraph_view);
+            $body[] = $paragraph_view;
           }
-        } elseif ($body_field_definition->getType() == 'text_long')  {
-          $render .= render($content->get($body_field)->getValue()[0]['value']);
+        } elseif ($body_field_definition->getType() == 'text_long') {
+          $body[] = [
+            '#type' => 'processed_text',
+            '#text' => $content->get($body_field)->getValue()[0]['value'],
+            '#format' => 'full_html',
+          ];
         }
       }
 
-      $body = [
-        '#type' => 'processed_text',
-        '#text' => $render,
-        //        '#format' => $content->get($body_field)->getValue()[0]['format'],
-        '#format' => 'full_html',
-      ];
       $tabs[$id] = [
         'title' => $title,
         'body' => $body,

@@ -22,8 +22,8 @@
     {% endfor %}
   </ul>
   {% for fieldkey, fieldname in tabs %}
-  <div id="tabs-{{fieldkey}}">
-    <p>{{ fieldname.body|raw }}</p>
-  </div>
+    <div id="tabs-{{fieldkey}}">
+      <p>{{ fieldname.body }}</p>
+    </div>
   {% endfor %}
 </div>
